@@ -151,3 +151,18 @@ fabric.Canvas.prototype.onHistory = function() {
 
   this._historySaveAction();
 }
+
+/**
+ * Refresh latest history
+ */
+fabric.Canvas.prototype._refresh = function() {
+  if (this.historyProcessing)
+    return;
+
+  const json = this.historyNextState;
+
+  //overwrite/refresh
+  this.historyUndo[this.historyUndo.length - 1] = json;
+  this.historyNextState = this._historyNext();
+  this.fire('history:refresh', { json: json });
+}
